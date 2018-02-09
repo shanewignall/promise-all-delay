@@ -1,2 +1,2 @@
 # promise-all-delay
-Promise.all, but with an optional delay! Browser-compatible. 
+Promise.all, but sequential and with an optional delay.

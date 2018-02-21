@@ -4,7 +4,7 @@ Kinda like Promise.all, but sequential and with an optional delay.
 ```javascript
 /**
  * Executes an array of promises sequentially with a specified delay
- * @param {array} promises - An array of promises.
+ * @param {array} promises - An array of functions returning promises.
  * @param {integer} delay - An amount of time to wait between each promise execution in ms.
  */
 function promiseAll(promises, delay) {

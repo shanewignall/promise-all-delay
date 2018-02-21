@@ -13,7 +13,7 @@ function promiseAll(promises, delay) {
       promises[0]()
         .then(() => {
           setTimeout(() => {
-            promises.pop();
+            promises.shift();
 
             if (promises.length) {
               doPromise();

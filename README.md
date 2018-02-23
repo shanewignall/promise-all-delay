@@ -3,22 +3,43 @@ Kinda like Promise.all, but sequential and with an optional delay.
 
 ```javascript
 /**
- * Executes an array of promises sequentially with a specified delay
- * @param {array} promises - An array of functions returning promises.
+ * Executes an array of promises sequentially with a specified delay and concurrency value
+ * @param {array} promises - An array of promises.
  * @param {integer} delay - An amount of time to wait between each promise execution in ms.
+ * @param {integer} concurrency - The max number of parallel promises
  */
-function promiseAll(promises, delay) {
+function promiseAll(promises, delay, concurrency) {
   return new Promise((resolve, reject) => {
-    function doPromise() {
-      promises[0]()
-        .then(() => {
-          setTimeout(() => {
-            promises.shift();
+    var batches = [];
+    var batch;
 
-            if (promises.length) {
+    while (promises.length > 0) {
+      batches.push(promises.splice(0, concurrency));
+    }
+        
+    function doPromise() {
+      batch = batches[0];      
+      var promises = [];
+      
+      batch.forEach((func) => {
+        promises.push(func());
+      });
+      
+      Promise.all(promises).then(() => {
+          setTimeout(() => {
+            
+            batches.shift();
+            if (batches.length) {
               doPromise();
             } else {
-              return resolve();
+              if (batches.length > 1) {
+                batches.shift();
+                
+                batch = batches[0];
+                doPromise();
+              } else {
+                return resolve();
+              }
             }
           }, delay);
         }).catch((err) => {

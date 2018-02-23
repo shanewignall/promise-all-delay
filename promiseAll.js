@@ -4,6 +4,7 @@
  * @param {integer} delay - An amount of time to wait between each promise execution in ms.
  * @param {integer} concurrency - The max number of parallel promises
  */
+
 function promiseAll(promises, delay, concurrency) {
   return new Promise((resolve, reject) => {
     var batches = [];

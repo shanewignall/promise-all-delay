@@ -1,5 +1,5 @@
 # promise-all-delay
-Kinda like Promise.all, but sequential and with an optional delay.
+Executes an array of promises sequentially with a specified delay and concurrency value
 
 ```javascript
 /**

@@ -1,9 +1,9 @@
 # promise-all-delay
-Executes an array of promises sequentially with a specified delay and concurrency value
+Executes an array of promises-returning functions sequentially with a specified delay and concurrency value
 
 ```javascript
 /**
- * Executes an array of promises sequentially with a specified delay and concurrency value
+ * Executes an array of promises-returning functions sequentially with a specified delay and concurrency value
  * @param {array} promises - An array of promises.
  * @param {integer} delay - An amount of time to wait between each promise execution in ms.
  * @param {integer} concurrency - The max number of parallel promises

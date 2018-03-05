@@ -9,7 +9,7 @@ Executes an array of promises-returning functions sequentially with a specified 
  * @param {integer} concurrency - The max number of parallel promises
  */
  
-function promiseAll(promises, delay, concurrency) {
+function promiseAll(promises, delay = 0, concurrency = 1) {
   return new Promise((resolve, reject) => {
     var batches = [];
     var batch;
@@ -17,37 +17,37 @@ function promiseAll(promises, delay, concurrency) {
     while (promises.length > 0) {
       batches.push(promises.splice(0, concurrency));
     }
-        
+
     function doPromise() {
-      batch = batches[0];      
+      batch = batches[0];
       var promises = [];
-      
+
       batch.forEach((func) => {
         promises.push(func());
       });
-      
+
       Promise.all(promises).then(() => {
-          setTimeout(() => {
-            
-            batches.shift();
-            if (batches.length) {
+        setTimeout(() => {
+
+          batches.shift();
+          if (batches.length) {
+            doPromise();
+          } else {
+            if (batches.length > 1) {
+              batches.shift();
+
+              batch = batches[0];
               doPromise();
             } else {
-              if (batches.length > 1) {
-                batches.shift();
-                
-                batch = batches[0];
-                doPromise();
-              } else {
-                return resolve();
-              }
+              return resolve();
             }
-          }, delay);
-        }).catch((err) => {
-          reject(err);
-        });
+          }
+        }, delay);
+      }).catch((err) => {
+        reject(err);
+      });
     }
-    
+
     doPromise();
   });
 }

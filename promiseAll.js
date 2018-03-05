@@ -9,6 +9,10 @@ function promiseAll(promises, delay = 0, concurrency = 1) {
   return new Promise((resolve, reject) => {
     var batches = [];
     var batch;
+    
+    if (concurrency === 0) {
+      concurrency = 1;
+    }
 
     while (promises.length > 0) {
       batches.push(promises.splice(0, concurrency));
